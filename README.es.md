@@ -1,6 +1,3 @@
-# Teoría LAF: Límites Aritméticos Finitos
-*Un enfoque ultrafinitista para el descubrimiento de patrones estructurales en la densidad numérica.*
-
 La *Teoría LAF (Límites Aritméticos Finitos)* rechaza conceptualmente el uso del infinito abstracto en el análisis matemático. En su lugar, propone un marco de ingeniería numérica basado en límites reales de información.
 
 El objetivo de esta teoría es identificar y validar la simetría estructural de los números primos dentro del espectro máximo de complejidad computable en el universo físico, proveyendo herramientas predecibles para la computación, la criptografía y la física aplicada.
@@ -50,4 +47,34 @@ Para demostrar que el patrón de funciones es verdadero y no una anomalía casua
 
 ### Estructura del Experimento:
 1. *Bloque A (Matriz Inicial):* Creación y almacenamiento de los primeros $10^{12,200}$ números primos del universo aritmético.
-2. *Bloque B (Matriz Límite):* Creación y almacenamiento de los siguientes $10^{12,…
+2. *Bloque B (Matriz Límite):* Creación y almacenamiento de los siguientes $10^{12,200}$ números primos (desde la posición $10^{12,200} + 1$ hasta $2 \times 10^{12,200}$).
+
+### Ecuación de Correlación LAF
+
+Si aplicamos la función de patrones a ambos bloques de primos y comparamos sus masas totales, la fórmula se expresa como:
+
+$$\frac{\sum_{i=1}^{10^{12,200}} (p_i)^{\log_2(5)}}{\sum_{j=10^{12,200}+1}^{2 \times 10^{12,200}} (p_j)^{\log_2(5)}} = K$$
+
+### Lógica del Resultado Esperado ($K$)
+Dado que el Bloque B contiene números primos que numéricamente son muchísimo más grandes que los del Bloque A, el denominador de la fracción será mayor. Sin embargo, si la teoría es correcta y existe un orden estructural inmutable hasta el límite máximo de la ciencia, la relación entre ambos bloques no puede ser caótica. 
+
+Por leyes de densidad asintótica aplicadas al universo cerrado de la teoría, la balanza debe estabilizarse de forma limpia y predecible en el espectro decimal:
+
+$$K \approx 0.111 \quad (11.1\%)$$
+
+Si al correr simulaciones a escala el resultado converge rigurosamente en este ~11.1%, quedará demostrado de forma empírica y definitiva que existe un patrón funcional regulador y que los primos mantienen un equilibrio cerrado y predecible en el mundo real.
+
+---
+
+## 4. Guía de Implementación para Desarrolladores de Núcleos (CUDA Kernels)
+
+La naturaleza de la Teoría LAF es nativamente paralela, diseñada para ejecutarse de manera eficiente en arquitecturas masivas de GPU (NVIDIA CUDA) mediante operaciones de reducción y mapas de memoria optimizados.
+
+### Estrategia de Paralelización Recomendada
+
+1. *Generación de Primos (Sieve en GPU):* Implementar una Criba de Eratóstenes o Sundaram segmentada y optimizada para memoria global de la GPU para poblar los arrays de entrada de tamaño $N = 10^{12,200}$.
+2. *Kernel de Transformación Funcional:* Cada hilo de ejecución (CUDA thread) mapea un elemento $p_i$. Utilizar la función intrínseca del dispositivo __powf(p_i, 2.321928f) aprovechando las unidades de funciones especiales (SFU) del hardware para máxima velocidad.
+3. *Kernel de Reducción Paralela (Parallel Reduction):* Para evitar cuellos de botella e imprecisiones de coma flotante, implementar una reducción en árbol utilizando memoria compartida (__shared__) dentro de los bloques de hilos y operaciones de barajado (__shfl_down_sync).
+
+---
+*Desarrollado bajo la filosofía del Ultrafinitismo Estructural.*
