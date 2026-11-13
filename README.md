@@ -153,57 +153,57 @@ The tower without parentheses ($10^{10^{10^{122}}}$) describes the total cosmolo
 
 Developed under the philosophy of Structural Ultrafinitism.
 
-import math
+ import math
 
-def generar_n_primos(cantidad_objetivo):
-    """Genera exactamente los primeros N números primos."""
-    if cantidad_objetivo < 6:
-        limite = 15
-    else:
-        # Cota superior de Rosser para asegurar suficientes primos
-        limite = int(cantidad_objetivo * (math.log(cantidad_objetivo) + math.log(math.log(cantidad_objetivo)))) + 10
+ def generar_n_primos(cantidad_objetivo):
+     """Genera exactamente los primeros N números primos."""
+     if cantidad_objetivo < 6:
+         limite = 15
+     else:
+         # Cota superior de Rosser para asegurar suficientes primos
+         limite = int(cantidad_objetivo * (math.log(cantidad_objetivo) + math.log(math.log(cantidad_objetivo)))) + 10
         
-    criba = bytearray(b'\x01') * (limite + 1)
-    criba[0:2] = b'\x00\x00'
-    for i in range(2, int(math.isqrt(limite)) + 1):
-        if criba[i]:
+     criba = bytearray(b'\x01') * (limite + 1)
+     criba[0:2] = b'\x00\x00'
+     for i in range(2, int(math.isqrt(limite)) + 1):
+         if criba[i]:
             criba[i*i : limite+1 : i] = b'\x00' * len(range(i*i, limite+1, i))
             
-    primos = [i for i, es_primo in enumerate(criba) if es_primo]
-    return primos[:cantidad_objetivo]
-
-def ejecutar_validacion_mitades():
-    # Límite teórico absoluto de la Teoría LAF
-    N_MAX_TEORICO = 10**12200
-    MITAD_TEORICA = N_MAX_TEORICO // 2  # 5 * 10^12199 primos por mitad
+     primos = [i for i, es_primo in enumerate(criba) if es_primo]
+     return primos[:cantidad_objetivo]
+ 
+ def ejecutar_validacion_mitades():
+     # Límite teórico absoluto de la Teoría LAF
+     N_MAX_TEORICO = 10**12200
+     MITAD_TEORICA = N_MAX_TEORICO // 2  # 5 * 10^12199 primos por mitad
+     
+     constante_laf = math.log2(5)  # ~2.321928
     
-    constante_laf = math.log2(5)  # ~2.321928
+     # Escalas de prueba computables (cantidad total de primos dividida en 2 mitades exactas)
+     escalas_primos = list((20, 200, 2000, 20000, 200000))
     
-    # Escalas de prueba computables (cantidad total de primos dividida en 2 mitades exactas)
-    escalas_primos = list((20, 200, 2000, 20000, 200000))
+     print("Límite Teórico Total (N_max): 10^12,200 primos")
+     print("Tamaño de cada mitad teórica: 5 * 10^12,199 primos")
+     print(f"Constante Base LAF (log2(5)): {constante_laf:.6f}")
+     print("-" * 75)
+     print(f"{'Total Primos (M)':<18} | {'Primos por Mitad':<18} | {'Valor K':<12} | {'Porcentaje (%)'}")
+     print("-" * 75)
     
-    print("Límite Teórico Total (N_max): 10^12,200 primos")
-    print("Tamaño de cada mitad teórica: 5 * 10^12,199 primos")
-    print(f"Constante Base LAF (log2(5)): {constante_laf:.6f}")
-    print("-" * 75)
-    print(f"{'Total Primos (M)':<18} | {'Primos por Mitad':<18} | {'Valor K':<12} | {'Porcentaje (%)'}")
-    print("-" * 75)
-    
-    for M in escalas_primos:
-        primos = generar_n_primos(M)
-        mitad = M // 2
-        
-        # División en dos mitades exactas en cantidad de números primos
-        bloque_A = primos[:mitad]
-        bloque_B = primos[mitad:]
-        
-        suma_A = sum(p ** constante_laf for p in bloque_A)
-        suma_B = sum(p ** constante_laf for p in bloque_B)
-        
-        K = suma_A / suma_B
-        porcentaje = K * 100
-        
-        print(f"{M:<18} | {mitad:<18} | {K:.8f}   | {porcentaje:.4f}%")
-
+     for M in escalas_primos:
+         primos = generar_n_primos(M)
+         mitad = M // 2
+         
+         # División en dos mitades exactas en cantidad de números primos
+         bloque_A = primos[:mitad]
+         bloque_B = primos[mitad:]
+         
+         suma_A = sum(p ** constante_laf for p in bloque_A)
+         suma_B = sum(p ** constante_laf for p in bloque_B)
+         
+         K = suma_A / suma_B
+         porcentaje = K * 100
+         
+         print(f"{M:<18} | {mitad:<18} | {K:.8f}   | {porcentaje:.4f}%")
+ 
 if _name_ == "_main_":
     ejecutar_validacion_mitades()
